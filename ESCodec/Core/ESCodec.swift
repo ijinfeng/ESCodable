@@ -18,6 +18,7 @@
 
 import Foundation
 
+public typealias ESCodable = ESDecodable & ESEncodable
 
 @propertyWrapper
 class ESCodecProperty<T> {
@@ -401,8 +402,6 @@ extension RawRepresentable where Self: ESCodable, Self.RawValue == UInt64 {
     }
 }
 
-
-public typealias ESCodable = ESDecodable & ESEncodable
 
 // MARK: Decode
 public protocol ESDecodable: Decodable {
