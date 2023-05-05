@@ -280,53 +280,63 @@ extension ESCodecProperty: ESPropertyDecodable where T: Decodable {
         // TODO: 可选枚举无法命中
         else if T.self is any RawRepresentable.Type || T.self is (any RawRepresentable)?.Type {
             if let stringValue = try? container.decode(String.self, forKey: key) {
-                if let rawType = T.self as? (any RawRepresentable<String>.Type), let v = rawType.init(rawValue: stringValue) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int>.Type), let v = rawType.init(rawValue: Int(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int8>.Type), let v = rawType.init(rawValue: Int8(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int16>.Type), let v = rawType.init(rawValue: Int16(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int32>.Type), let v = rawType.init(rawValue: Int32(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int64>.Type), let v = rawType.init(rawValue: Int64(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt>.Type), let v = rawType.init(rawValue: UInt(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt8>.Type), let v = rawType.init(rawValue: UInt8(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt16>.Type), let v = rawType.init(rawValue: UInt16(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt32>.Type), let v = rawType.init(rawValue: UInt32(stringValue) ?? 0) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt64>.Type), let v = rawType.init(rawValue: UInt64(stringValue) ?? 0) as? T {
-                    wrappedValue = v
+                if #available(iOS 16.0.0, *) {
+                    if let rawType = T.self as? (any RawRepresentable<String>.Type), let v = rawType.init(rawValue: stringValue) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int>.Type), let v = rawType.init(rawValue: Int(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int8>.Type), let v = rawType.init(rawValue: Int8(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int16>.Type), let v = rawType.init(rawValue: Int16(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int32>.Type), let v = rawType.init(rawValue: Int32(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int64>.Type), let v = rawType.init(rawValue: Int64(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt>.Type), let v = rawType.init(rawValue: UInt(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt8>.Type), let v = rawType.init(rawValue: UInt8(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt16>.Type), let v = rawType.init(rawValue: UInt16(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt32>.Type), let v = rawType.init(rawValue: UInt32(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt64>.Type), let v = rawType.init(rawValue: UInt64(stringValue) ?? 0) as? T {
+                        wrappedValue = v
+                    }
+                } else {
+                    // Fallback on earlier versions
+                    // TODO: Support enum codable
                 }
                 return
             } else if let intValue = try? container.decode(Int.self, forKey: key) {
-                if let rawType = T.self as? (any RawRepresentable<Int>.Type), let v = rawType.init(rawValue: intValue) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int8>.Type), let v = rawType.init(rawValue: Int8(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int16>.Type), let v = rawType.init(rawValue: Int16(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int32>.Type), let v = rawType.init(rawValue: Int32(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<Int64>.Type), let v = rawType.init(rawValue: Int64(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<String>.Type), let v = rawType.init(rawValue: String(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt>.Type), let v = rawType.init(rawValue: UInt(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt8>.Type), let v = rawType.init(rawValue: UInt8(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt16>.Type), let v = rawType.init(rawValue: UInt16(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt32>.Type), let v = rawType.init(rawValue: UInt32(intValue)) as? T {
-                    wrappedValue = v
-                } else if let rawType = T.self as? (any RawRepresentable<UInt64>.Type), let v = rawType.init(rawValue: UInt64(intValue)) as? T {
-                    wrappedValue = v
+                if #available(iOS 16.0.0, *) {
+                    if let rawType = T.self as? (any RawRepresentable<Int>.Type), let v = rawType.init(rawValue: intValue) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int8>.Type), let v = rawType.init(rawValue: Int8(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int16>.Type), let v = rawType.init(rawValue: Int16(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int32>.Type), let v = rawType.init(rawValue: Int32(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<Int64>.Type), let v = rawType.init(rawValue: Int64(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<String>.Type), let v = rawType.init(rawValue: String(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt>.Type), let v = rawType.init(rawValue: UInt(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt8>.Type), let v = rawType.init(rawValue: UInt8(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt16>.Type), let v = rawType.init(rawValue: UInt16(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt32>.Type), let v = rawType.init(rawValue: UInt32(intValue)) as? T {
+                        wrappedValue = v
+                    } else if let rawType = T.self as? (any RawRepresentable<UInt64>.Type), let v = rawType.init(rawValue: UInt64(intValue)) as? T {
+                        wrappedValue = v
+                    }
+                } else {
+                    // Fallback on earlier versions
+                    // TODO: Support enum codable
                 }
                 return
             }
@@ -350,6 +360,7 @@ extension RawRepresentable where Self: ESCodable, Self.RawValue == String {
     init() {
         self.init(rawValue: "")!
     }
+    
 }
 extension RawRepresentable where Self: ESCodable, Self.RawValue == Int {
     init() {
